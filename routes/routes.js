@@ -5,6 +5,7 @@ const {user,postdb} = require('../model/db');
 const bcrypt=require('bcrypt');
 const jwt=require('jsonwebtoken');
 const auth=require('../middleware/auth');
+require('dotenv').config();
 router.use(bodyParser.json());
 
 
@@ -33,7 +34,7 @@ router.post('/login',async (req,res)=>{
         else{
             const ismatch=bcrypt.compareSync(req.body.password,isuser.password);
             if(ismatch){
-                const token=jwt.sign({email:isuser.email},'secretkey');
+                const token=jwt.sign({email:isuser.email},process.env.JWT_SECRET);
                 res.status(200).json({
                     message:'user logged in successfully',
                     token:token
