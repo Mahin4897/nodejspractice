@@ -9,7 +9,6 @@ const auth=(req,res,next)=>{
             res.status(400).json({message:'invalid token'});
         }
         else{
-            console.log(decoded);
             req.decoded=decoded.email;
             next();
         }

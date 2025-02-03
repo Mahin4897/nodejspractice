@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const bodyParser = require('body-parser');
-const {user} = require('../model/db');
+const {user,postdb} = require('../model/db');
 const bcrypt=require('bcrypt');
 const jwt=require('jsonwebtoken');
 const auth=require('../middleware/auth');
@@ -47,7 +47,25 @@ router.post('/login',async (req,res)=>{
 
 router.get("/",auth,(req,res)=>{
    res.status(200).json({message:'welcome to the homepage'});
-   console.log(req.decoded);
+})
+
+router.post('/post',auth,async (req,res)=>{
+  try{
+
+    const useid= await user.findOne({where:{email:req.decoded}});
+    if(!useid){
+        res.status(400).json({message:'user not found'});
+    }
+    console.log(useid);
+    const post = postdb.create({
+        title:req.body.title,
+        body:req.body.body,
+        userId:useid.id
+    });
+    res.status(200).json({message:'post created successfully'});
+  }catch(error){
+    res.status(400).json({message:'post not created'});
+  }
 })
 
 

@@ -1,6 +1,6 @@
 const {Sequelize,DataTypes} = require('sequelize');
 
-const sequelizedb = new Sequelize('ctest', 'root', '', {
+const sequelizedb = new Sequelize('test', 'root', 'mahin444', {
     host: 'localhost',
     dialect: 'mysql'
 });
@@ -33,13 +33,13 @@ const user = sequelizedb.define('user', {
         allowNull: false
     }
 });
+user.hasMany(postdb);
+try {
+    sequelizedb.sync();
+    console.log('Table created successfully!');
+} catch (error) {
+    console.error('Unable to create table:', error);
+}
 
-//try {
-//    sequelizedb.sync();
-//    console.log('Table created successfully!');
-//} catch (error) {
-//    console.error('Unable to create table:', error);
-//}
 
-
-module.exports = { sequelizedb,user };
+module.exports = { sequelizedb,user,postdb };
