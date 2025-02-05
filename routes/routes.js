@@ -68,6 +68,24 @@ router.post('/post',auth,async (req,res)=>{
     res.status(400).json({message:'post not created'});
   }
 })
+router.get("/post/:id",auth,async (req,res)=>{
+    try{
+        const post=await user.findOne({where:{
+          id:req.params.id,
 
+        },
+        attributes:['name','email'],
+        include:{
+            model:postdb,
+            attributes:['title','body']
+        }});
+        if(!post){
+            res.status(400).json({message:'post not found'});
+        }
+        res.status(200).json({message:'post found',post:post});
+    }catch(error){
+        res.status(400).json({message:'post not found'});
+    }
+})
 
 module.exports = router;
