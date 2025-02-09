@@ -33,7 +33,10 @@ const user = sequelizedb.define('user', {
         allowNull: false
     }
 });
-user.hasMany(postdb);
+user.hasMany(postdb,{
+    foreignKey:'user_id',
+    onDelete:'CASCADE'
+});
 try {
     sequelizedb.sync();
     console.log('Table created successfully!');
